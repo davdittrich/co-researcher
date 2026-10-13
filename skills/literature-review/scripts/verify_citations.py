@@ -68,9 +68,11 @@ def crossref_user_agent() -> str:
 
 _CROSSREF = http_client.HttpClient(
     "https://api.crossref.org/", qps=2.0, user_agent=crossref_user_agent())
+_DATACITE = http_client.HttpClient("https://api.datacite.org/", qps=1.0)
 
 _DOI_RE = re.compile(r"10\.\d{4,9}/[^\s\"'<>]+")
 _TITLE_MATCH_THRESHOLD = 0.85
+_PHRASE_BREAKING_RE = re.compile(r"[?*|]")
 
 
 class ResolverUnavailable(RuntimeError):
@@ -243,6 +245,34 @@ def resolve_doi(doi: str, *, fail_on_unavailable: bool = False) -> dict | None:
           "resolution_status": "partial" if openalex_unavailable else "complete"}
 
 
+def _registration(client, url: str, registry: str, doi: str) -> dict:
+  try:
+    return client.fetch_json(url, max_retries=1)
+  except http_client.HttpError as err:
+    if err.status_code != 404:
+      print(f"{registry} error for DOI {doi}: {err}", file=sys.stderr)
+    return {}
+
+
+def registered_titles(doi: str):
+  """Yield (registry, title) from the DOI's own Crossref or DataCite record.
+
+  OpenAlex sometimes attaches a DOI to the wrong work, such as a dataset
+  snapshot in place of the arXiv paper, so a title mismatch against OpenAlex
+  is checked against the registration before it is reported. DataCite is
+  asked only when no Crossref title matched.
+  """
+  path = urllib.parse.quote(doi)
+  message = _registration(_CROSSREF, f"https://api.crossref.org/works/{path}",
+                          "Crossref", doi).get("message") or {}
+  for title in message.get("title") or []:
+    yield "crossref", title
+  data = _registration(_DATACITE, f"https://api.datacite.org/dois/{path}",
+                       "DataCite", doi).get("data") or {}
+  for item in (data.get("attributes") or {}).get("titles") or []:
+    yield "datacite", item.get("title") or ""
+
+
 def retracted_via_crossref(doi: str) -> bool | None:
   """Does a Crossref retraction notice point at this DOI?
 
@@ -299,7 +329,7 @@ def retracted_via_epmc(pmid: str) -> bool | None:
 
 
 def resolve_title(title: str, *, fail_on_unavailable: bool = False) -> dict | None:
-  safe_title = title.replace('"', "'")
+  safe_title = _PHRASE_BREAKING_RE.sub(" ", title.replace('"', "'"))
   query = urllib.parse.urlencode(
       {"filter": f'title.search:"{safe_title}"', "per-page": 1})
   try:
@@ -395,7 +425,12 @@ def verify_one(entry: dict, *, fail_on_unavailable: bool = False) -> dict:
         claimed = entry.get("title")
         if (claimed and hit["title"] and _extract_doi(claimed) is None
             and not titles_match(claimed, hit["title"])):
-          result["status"] = "mismatched"
+          for registry, title in registered_titles(entry["doi"]):
+            if titles_match(claimed, title):
+              result.update(source=registry, matched_title=title)
+              break
+          else:
+            result["status"] = "mismatched"
     return result
   if entry.get("title"):
     hit = resolve_title(entry["title"],
@@ -416,7 +451,7 @@ def verify_one(entry: dict, *, fail_on_unavailable: bool = False) -> dict:
 class NetworkCitationResolver:
   """Production resolver backed by the module's configured network clients."""
 
-  identity = "openalex+crossref+europepmc"
+  identity = "openalex+crossref+datacite+europepmc"
 
   def resolve(self, entry: dict) -> dict:
     return verify_one(entry, fail_on_unavailable=True)
@@ -504,7 +539,6 @@ def verify_citation_entries(
       result = _unavailable_result(entry, str(exc) or "resolver unavailable")
     if not _valid_resolver_result(result, entry):
       raise ValueError("resolver result is malformed or internally inconsistent")
-    status = result["status"]
     normalized = dict(result)
     normalized["entry_index"] = index
     normalized["input_identity"] = input_identity
