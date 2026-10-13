@@ -25,6 +25,11 @@ Co-Researcher provides specialized research skills that run inside AI coding ass
 - **Research Manager** — dynamic task scaffolding and polyglot session persistence
 - **Academic Writing** — eliminating AI-isms from research prose
 
+## Report
+
+- [Does it say what the paper says?](https://coresearcher.poemswe.com/paper/): plain-language report on Co-Researcher's evidence checker, which tests whether each sentence in an AI-written literature review matches its source. Tested with Claude and Codex as writers on 14 planted mistakes; 13 caught before any fixing, one known gap.
+- [Every Claim Traced](https://coresearcher.poemswe.com/paper/write-up/): the technical write-up, with methods, tables and every test case.
+
 ## Evals (this site)
 
 Models evaluated: Claude (Anthropic), Codex (OpenAI), Gemini (Google)
