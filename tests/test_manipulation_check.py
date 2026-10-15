@@ -35,13 +35,18 @@ def test_manipulation_check_step_sets_a_floor_and_gates_null_results():
   assert "exceeds a stated floor before pre-registering" in step
   assert "occurs in the treatment arm" in step
   assert "cannot test the hypothesis" in step
+  assert "or the treatment step does not occur" in step
+  assert "directly under the report heading" in step
+  assert "at least 5 expected occurrences" in step
 
 
 def test_hypothesis_output_format_reports_the_manipulation_check():
   skill = HYPOTHESIS_SKILL.read_text(encoding="utf-8")
 
-  assert "**Manipulation Check**" in _section(
-      skill, "<output_format>", "</output_format>")
+  output = _section(skill, "<output_format>", "</output_format>")
+  line = _section(output, "**Manipulation Check**:", "**Falsification Criteria**:")
+
+  assert "[Treatment step seen]" in line
 
 
 def test_methodology_quality_control_names_manipulation_validity():
@@ -55,4 +60,10 @@ def test_manipulation_eval_case_targets_hypothesis_testing():
   case = MANIPULATION_CASE.read_text(encoding="utf-8")
 
   assert "- **Implementation Skill**: hypothesis-testing" in case
-  assert "floor" in _section(case, "### Must Include", "### Should")
+  must = _section(case, "### Must Include", "### Should Include")
+  should_not = _section(case, "### Should Not Include", "## Evaluation")
+
+  assert "both arms" in must
+  assert "memory-on arm" in must
+  assert "both pilot checks passed" in must
+  assert "no pilot" in should_not

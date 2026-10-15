@@ -31,9 +31,9 @@ Write the hypothesis and a pre-registration plan I can freeze before running.
 
 ### Must Include
 - [ ] H0 and H1 with the stated mechanism (looking up past corrections)
-- [ ] A measurable per-run proxy for the mechanism, such as corrections stored and later retrieved, or repeated mistakes per session
+- [ ] A measurable per-run proxy for the mechanism
 - [ ] A pilot with floors stated before the plan is frozen: corrections followed by a chance to repeat the mistake occur in both arms, and stored corrections are retrieved in the memory-on arm
-- [ ] A rule that a null result counts against H1 only if the floor was met
+- [ ] A rule that a null result counts against H1 only if both pilot checks passed
 
 ### Should Include
 - [ ] Noticing that one-step tasks in fresh sessions leave no correction to remember
@@ -43,13 +43,13 @@ Write the hypothesis and a pre-registration plan I can freeze before running.
 
 ### Should Not Include
 - [ ] Treating a null accuracy difference as disconfirming the memory mechanism without evidence the mechanism was exercised
-- [ ] Freezing the plan with the original task set unchanged
+- [ ] Freezing the plan with the original task set and no pilot
 
 ## Evaluation Criteria
 
 ### Design Quality (Primary)
 - Manipulation Validity: Does the design show the treatment can act through the stated mechanism?
-- Pre-registration: Are the proxy, floor and null-result rule fixed in advance?
+- Pre-registration: Are the proxy, both floors and the null-result rule fixed in advance?
 
 ### Analytical Quality
 - Does the response explain why a null result from this task set says nothing about the hypothesis?

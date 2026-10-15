@@ -49,7 +49,7 @@ model and the same clean commit, so one report never mixes code versions.
 
 ## Available Tests (34 total)
 
-Published 2.7 runs used the first 32; `outcome-scorer` was added in 2.8.0 and `manipulation-check` after it.
+Published 2.7 runs used the first 32; `outcome-scorer` was added in 2.8.0 and `manipulation-check` after 2.8.0.
 
 | Agent | Test | Difficulty |
 |-------|------|------------|
