@@ -32,7 +32,7 @@ Write the hypothesis and a pre-registration plan I can freeze before running.
 ### Must Include
 - [ ] H0 and H1 with the stated mechanism (looking up past corrections)
 - [ ] A measurable per-run proxy for the mechanism, such as corrections stored and later retrieved, or repeated mistakes per session
-- [ ] A pilot whose proxy must exceed, in the memory-on arm, a floor stated before the plan is frozen
+- [ ] A pilot with floors stated before the plan is frozen: corrections followed by a chance to repeat the mistake occur in both arms, and stored corrections are retrieved in the memory-on arm
 - [ ] A rule that a null result counts against H1 only if the floor was met
 
 ### Should Include
