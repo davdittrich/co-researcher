@@ -37,7 +37,8 @@ def test_manipulation_check_step_sets_a_floor_and_gates_null_results():
   assert "cannot test the hypothesis" in step
   assert "or the treatment step does not occur" in step
   assert "directly under the report heading" in step
-  assert "at least 5 expected occurrences" in step
+  assert "at least 5/f runs" in step
+  assert "5/p opportunities" in step
 
 
 def test_hypothesis_output_format_reports_the_manipulation_check():
