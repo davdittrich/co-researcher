@@ -32,7 +32,7 @@ def test_manipulation_check_step_sets_a_floor_and_gates_null_results():
 
   assert "proxy" in step
   assert "pilot" in step
-  assert "floor" in step
+  assert "floor in the treatment arm" in step
   assert "cannot test the hypothesis" in step
 
 
