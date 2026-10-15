@@ -1,6 +1,6 @@
 # Test Cases & Rubrics Reference
 
-Quick lookup guide for all 33 test cases, their specifications, and evaluation rubrics.
+Quick lookup guide for all 34 test cases, their specifications, and evaluation rubrics.
 
 ## Metadata Schema
 
@@ -59,7 +59,7 @@ field only for compatibility with external legacy cases.
 
 ---
 
-## Hypothesis-Explorer (4 tests)
+## Hypothesis-Explorer (5 tests)
 
 ### 1. Hypothesis Formulation
 - **Difficulty**: Medium
@@ -96,6 +96,15 @@ field only for compatibility with external legacy cases.
 - **Must Identify**: Scorer tested on real outputs before freezing, tie-break rule, both scores reported after a post-hoc change
 - **Timeout**: 900s
 - **Key Skill**: Validate the measurement instrument before the plan is frozen
+
+### 5. Manipulation Check
+- **Difficulty**: Medium
+- **Focus**: Confirming the manipulation triggers the hypothesised mechanism before pre-registration
+- **Rubric Profile**: Design Quality (60%), Analytical Quality (30%), Output Structure (10%)
+- **Task**: Write a pre-registration plan for a memory feature tested on one-step tasks in fresh sessions
+- **Must Identify**: Per-run mechanism proxy, pilot floor fixed before freezing, null result counts only if the floor was met
+- **Timeout**: 900s
+- **Key Skill**: Show the study exercises the mechanism before a null result can count
 
 ---
 
@@ -498,12 +507,12 @@ Score = (Primary_Score × Primary_Weight) + (Secondary_Score × Secondary_Weight
 
 ## Test Difficulty Rationale
 
-**Hard (48%, 16 tests)**:
+**Hard (47%, 16 tests)**:
 - Require high-level reasoning
 - Designed to differentiate frontier models
 - Examples: Analogy Finding, Simpson's Paradox, First Principles
 
-**Medium (48%, 16 tests)**:
+**Medium (50%, 17 tests)**:
 - Balanced cognitive load
 - Test practical competencies
 - Examples: Fallacy Detection, Effect Size Interpretation
@@ -528,6 +537,7 @@ This distribution is intentional - PhD-level agents should struggle with hard te
 | Unfalsifiable Claim | Analytical (75%) | Design (25%) | Hypothesis-Explorer |
 | Variable Mapping | Design (70%) | Analytical (30%) | Hypothesis-Explorer |
 | Outcome Scorer | Design (60%) | Analytical (30%) | Hypothesis-Explorer |
+| Manipulation Check | Design (60%) | Analytical (30%) | Hypothesis-Explorer |
 | Analogy Finding | Analytical (70%) | Design (30%) | Lateral-Thinker |
 | Constraint Satisfaction | Analytical (75%) | Output (25%) | Lateral-Thinker |
 | First Principles | Analytical (75%) | Reasoning (25%) | Lateral-Thinker |
